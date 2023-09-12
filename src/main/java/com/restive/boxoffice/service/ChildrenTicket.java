@@ -18,18 +18,22 @@ public class ChildrenTicket implements Ticket {
 
     @Override
     public BigDecimal getPrice(int count) {
+        // Find the ticket type by name
         TicketType childrenTicketType = ticketTypeRepository.findByName("Children");
         if (childrenTicketType == null) {
-            throw new RuntimeException("Adult ticket type not found");
+            throw new RuntimeException("Children's ticket type not found.");
         }
         BigDecimal basePrice = childrenTicketType.getBasePrice();
 
         if (basePrice == null) {
-            throw new RuntimeException("Base price for Adult ticket not found");
+            throw new RuntimeException("Base price for Children's ticket not found");
         }
+
+        // Define a constant for the discount rate 25%
+        final BigDecimal DISCOUNT_RATE = BigDecimal.valueOf(0.75);
         // Check if count is more than 3 to apply discount
         if (count >= 3) {
-            BigDecimal discountedPrice = basePrice.multiply(BigDecimal.valueOf(0.75)); // Apply 25% discount
+            BigDecimal discountedPrice = basePrice.multiply(DISCOUNT_RATE);
             return discountedPrice.multiply(BigDecimal.valueOf(count));
         } else {
             return basePrice.multiply(BigDecimal.valueOf(count));
