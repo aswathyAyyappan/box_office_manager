@@ -1,5 +1,6 @@
 package com.restive.boxoffice.service;
 
+import com.restive.boxoffice.constants.Constants;
 import com.restive.boxoffice.entity.TicketType;
 import com.restive.boxoffice.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,8 @@ public class SeniorTicket implements Ticket {
         if (adultBasePrice == null) {
             throw new RuntimeException("Base price for Adult ticket not found");
         }
-        // Define a constant for the discount rate 30%
-        final BigDecimal DISCOUNT_RATE = BigDecimal.valueOf(0.70);
-        BigDecimal discountedPrice = adultBasePrice.multiply(DISCOUNT_RATE); // Apply discount
+
+        BigDecimal discountedPrice = adultBasePrice.multiply(Constants.DISCOUNT_RATE_SENIOR); // Apply discount
         return discountedPrice.multiply(BigDecimal.valueOf(count));
     }
 }

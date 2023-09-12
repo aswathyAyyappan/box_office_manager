@@ -1,5 +1,6 @@
 package com.restive.boxoffice.service;
 
+import com.restive.boxoffice.constants.Constants;
 import com.restive.boxoffice.entity.TicketType;
 import com.restive.boxoffice.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,9 @@ public class ChildrenTicket implements Ticket {
             throw new RuntimeException("Base price for Children's ticket not found");
         }
 
-        // Define a constant for the discount rate 25%
-        final BigDecimal DISCOUNT_RATE = BigDecimal.valueOf(0.75);
         // Check if count is more than 3 to apply discount
         if (count >= 3) {
-            BigDecimal discountedPrice = basePrice.multiply(DISCOUNT_RATE);
+            BigDecimal discountedPrice = basePrice.multiply(Constants.DISCOUNT_RATE_CHILDREN);
             return discountedPrice.multiply(BigDecimal.valueOf(count));
         } else {
             return basePrice.multiply(BigDecimal.valueOf(count));
