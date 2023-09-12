@@ -24,8 +24,14 @@ public class MovieTicketResource {
     @PostMapping("/book")
     public ResponseEntity<TicketTransactionOutputDTO> bookTicket(
             @RequestBody TicketTransactionInputDTO inputDTO
-            ) throws AgeCategoryNotFoundException {
-        TicketTransactionOutputDTO ticketTransactionOutputDTO = movieTicket.bookTicket(inputDTO);
-        return ResponseEntity.ok(ticketTransactionOutputDTO);
+    ) {
+        try {
+            TicketTransactionOutputDTO ticketTransactionOutputDTO = movieTicket.bookTicket(inputDTO);
+            return ResponseEntity.ok(ticketTransactionOutputDTO);
+        } catch (AgeCategoryNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
