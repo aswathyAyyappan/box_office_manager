@@ -27,6 +27,12 @@ public class ChildrenTicket implements Ticket {
         if (basePrice == null) {
             throw new RuntimeException("Base price for Adult ticket not found");
         }
-        return basePrice.multiply(BigDecimal.valueOf(count));
+        // Check if count is more than 3 to apply discount
+        if (count >= 3) {
+            BigDecimal discountedPrice = basePrice.multiply(BigDecimal.valueOf(0.75)); // Apply 25% discount
+            return discountedPrice.multiply(BigDecimal.valueOf(count));
+        } else {
+            return basePrice.multiply(BigDecimal.valueOf(count));
+        }
     }
 }

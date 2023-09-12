@@ -8,7 +8,6 @@ import com.restive.boxoffice.entity.AgeCategory;
 import com.restive.boxoffice.repository.AgeCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,11 +16,8 @@ import java.util.*;
 @Service
 public class MovieTicket {
 
-    private final Ticket adultTicket;
-    private final Ticket childrenTicket;
-    private final Ticket seniorTicket;
-    private final Ticket teenTicket;
     private final AgeCategoryRepository ageCategoryRepository;
+    private final Map<String, Ticket> ticketMap;
 
     @Autowired
     public MovieTicket(@Qualifier("adultTicket") Ticket adultTicket,
@@ -29,11 +25,13 @@ public class MovieTicket {
                        @Qualifier("seniorTicket") Ticket seniorTicket,
                        @Qualifier("teenTicket") Ticket teenTicket,
                        AgeCategoryRepository ageCategoryRepository) {
-        this.adultTicket = adultTicket;
-        this.childrenTicket = childrenTicket;
-        this.seniorTicket = seniorTicket;
-        this.teenTicket = teenTicket;
         this.ageCategoryRepository = ageCategoryRepository;
+        //Creating a map to store the tickets
+        this.ticketMap = new HashMap<>();
+        this.ticketMap.put("Adult", adultTicket);
+        this.ticketMap.put("Children", childrenTicket);
+        this.ticketMap.put("Senior", seniorTicket);
+        this.ticketMap.put("Teen", teenTicket);
     }
 
     public TicketTransactionOutputDTO bookTicket(TicketTransactionInputDTO inputDTO) {
@@ -51,10 +49,16 @@ public class MovieTicket {
 
         //process the Ticket type list to calculate the total amount for each type.
         List<TicketDTO> ticketDTOS = new ArrayList<>();
-        for(Map.Entry<String, Integer> ticketEntry : ticketTypeCounts.entrySet() ){
+        for (Map.Entry<String, Integer> ticketEntry : ticketTypeCounts.entrySet()) {
             String ticketType = ticketEntry.getKey();
             int count = ticketEntry.getValue();
-            BigDecimal cost = adultTicket.getPrice(count); // TO DO
+            // Use the ticket map to select the appropriate ticket based on ticketType
+            Ticket selectedTicket = ticketMap.get(ticketType);
+
+            if (selectedTicket == null) {
+                throw new IllegalArgumentException("Invalid ticket type: " + ticketType);
+            }
+            BigDecimal cost = selectedTicket.getPrice(count);
             totalCost = totalCost.add(cost);
             TicketDTO ticketDTO = TicketDTO.builder()
                     .ticketType(ticketType)
@@ -64,7 +68,7 @@ public class MovieTicket {
             ticketDTOS.add(ticketDTO);
         }
         // Sort the tickets by ticketType
-        Collections.sort(ticketDTOS,Comparator.comparing(TicketDTO::getTicketType));
+        ticketDTOS.sort(Comparator.comparing(TicketDTO::getTicketType));
         return TicketTransactionOutputDTO.builder()
                 .transactionId(transactionId)
                 .totalCost(totalCost)
