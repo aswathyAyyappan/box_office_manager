@@ -26,7 +26,9 @@ public class SeniorTicket implements Ticket {
         if (adultBasePrice == null) {
             throw new RuntimeException("Base price for Adult ticket not found");
         }
-        BigDecimal discountedPrice = adultBasePrice.multiply(BigDecimal.valueOf(0.70)); // Apply 30% discount
+        // Define a constant for the discount rate 30%
+        final BigDecimal DISCOUNT_RATE = BigDecimal.valueOf(0.70);
+        BigDecimal discountedPrice = adultBasePrice.multiply(DISCOUNT_RATE); // Apply discount
         return discountedPrice.multiply(BigDecimal.valueOf(count));
     }
 }
