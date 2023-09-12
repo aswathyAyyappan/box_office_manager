@@ -1,6 +1,7 @@
 package com.restive.boxoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -9,6 +10,7 @@ import lombok.NonNull;
 @Table(name = "age_category")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class AgeCategory {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

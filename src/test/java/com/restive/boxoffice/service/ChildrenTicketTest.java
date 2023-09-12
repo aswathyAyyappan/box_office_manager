@@ -25,7 +25,7 @@ public class ChildrenTicketTest {
 
      @Test
     public void testGetPriceWithValidTicketTypeAndNoDiscount() {
-        TicketType childrenTicketType = new TicketType(Long.valueOf(1),"Children", BigDecimal.valueOf(5));
+        TicketType childrenTicketType = new TicketType(1L,"Children", BigDecimal.valueOf(5));
         when(ticketTypeRepository.findByName("Children")).thenReturn(childrenTicketType);
 
         BigDecimal price = childrenTicket.getPrice(2);
@@ -36,7 +36,7 @@ public class ChildrenTicketTest {
 
     @Test
     public void testGetPriceWithValidTicketTypeAndDiscount() {
-        TicketType childrenTicketType = new TicketType(Long.valueOf(1),"Children", BigDecimal.valueOf(5));
+        TicketType childrenTicketType = new TicketType(1L,"Children", BigDecimal.valueOf(5));
         when(ticketTypeRepository.findByName("Children")).thenReturn(childrenTicketType);
 
         BigDecimal price = childrenTicket.getPrice(3);
@@ -56,7 +56,7 @@ public class ChildrenTicketTest {
 
     @Test
     public void testGetPriceWithNullBasePrice() {
-        TicketType childrenTicketType = new TicketType(Long.valueOf(1),"Children", null);
+        TicketType childrenTicketType = new TicketType(1L,"Children", null);
         when(ticketTypeRepository.findByName("Children")).thenReturn(childrenTicketType);
 
         assertThrows(RuntimeException.class, () -> {

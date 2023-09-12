@@ -26,7 +26,7 @@ public class TeenTicketTest {
 
     @Test
     public void testGetPriceWithValidData() {
-        TicketType adultTicketType = new TicketType(Long.valueOf(1), "Teen", BigDecimal.valueOf(12));
+        TicketType adultTicketType = new TicketType(1L, "Teen", BigDecimal.valueOf(12));
         when(ticketTypeRepository.findByName("Teen")).thenReturn(adultTicketType);
 
         BigDecimal price = teenTicket.getPrice(3);
@@ -37,7 +37,7 @@ public class TeenTicketTest {
 
     @Test
     public void testGetPriceWithNullBasePrice() {
-        TicketType adultTicketType = new TicketType(Long.valueOf(1),"Teen", null);
+        TicketType adultTicketType = new TicketType(1L,"Teen", null);
         when(ticketTypeRepository.findByName("Teen")).thenReturn(adultTicketType);
 
         assertThrows(RuntimeException.class, () -> {
