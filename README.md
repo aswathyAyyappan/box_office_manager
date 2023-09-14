@@ -10,6 +10,9 @@ This Spring boot application enables calculation of the total cost for movie tic
 1. Clone [BoxOfficeManager](https://github.com/aswathyAyyappan/box_office_manager.git)
 2. Run app
 3. The Spring Boot application will be accessible on port 8090.
+
+### Documentation
+OpenAPI endpoint : Run your application locally and [Click here](http://localhost:8090/swagger-ui/index.html)
 ### Sample
 
 ```
