@@ -1,7 +1,12 @@
 package com.restive.boxoffice.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class AgeCategoryNotFoundException extends Throwable {
-    public AgeCategoryNotFoundException(String s) {
-        super(s);
-    }
+    private String errorMessage;
 }
