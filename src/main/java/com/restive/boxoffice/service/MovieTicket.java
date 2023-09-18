@@ -7,6 +7,7 @@ import com.restive.boxoffice.dto.TicketTransactionInputDTO;
 import com.restive.boxoffice.dto.TicketTransactionOutputDTO;
 import com.restive.boxoffice.entity.AgeCategory;
 import com.restive.boxoffice.exception.AgeCategoryNotFoundException;
+import com.restive.boxoffice.exception.InvalidTicketTypeException;
 import com.restive.boxoffice.repository.AgeCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,7 +37,7 @@ public class MovieTicket {
         this.ticketMap.put(Constants.TEEN_TICKET_TYPE, teenTicket);
     }
 
-    public TicketTransactionOutputDTO bookTicket(TicketTransactionInputDTO inputDTO) throws AgeCategoryNotFoundException {
+    public TicketTransactionOutputDTO bookTicket(TicketTransactionInputDTO inputDTO) throws InvalidTicketTypeException, AgeCategoryNotFoundException {
         Long transactionId = inputDTO.getTransactionId();
         List<CustomerDTO> customers = inputDTO.getCustomers();
 
@@ -59,7 +60,7 @@ public class MovieTicket {
             Ticket selectedTicket = ticketMap.get(ticketType);
 
             if (selectedTicket == null) {
-                throw new IllegalArgumentException("Invalid ticket type: " + ticketType);
+                throw new InvalidTicketTypeException("Invalid ticket type: " + ticketType);
             }
             BigDecimal cost = selectedTicket.getPrice(count);
             totalCost = totalCost.add(cost);
